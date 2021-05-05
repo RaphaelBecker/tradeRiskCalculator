@@ -3,7 +3,7 @@
 import calculator as cal
 
 import sys
-from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox
+from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QWidget
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QDialogButtonBox
 from PyQt5.QtWidgets import QFormLayout
@@ -18,7 +18,7 @@ class Dialog(QDialog):
         self.savedText = {}
 
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttonBox.accepted.connect(self.accept)
+        buttonBox.accepted.connect(self.accepted)
         buttonBox.rejected.connect(self.reject)
 
         mainLayout = QVBoxLayout()
@@ -43,6 +43,10 @@ class Dialog(QDialog):
         self.layout.addRow(QLabel("Current price:"), self.current_price)
         self.layout.addRow(QLabel("Leverage:"), self.leverage)
         self.formGroupBox.setLayout(self.layout)
+        self.widget = QWidget()
+        self.textLabel = QLabel(self.widget)
+        self.textLabel.setText("Hello World!")
+
 
     def make_saveTextEdit(self, x):
         def saveTextEdit(text):
@@ -64,5 +68,4 @@ if __name__ == '__main__':
     dialog = Dialog()
     dialog.exec_()
     string = calculate()
-    print()
     app.exit()
