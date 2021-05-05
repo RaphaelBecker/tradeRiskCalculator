@@ -3,7 +3,7 @@
 import calculator as cal
 
 import sys
-from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QWidget
+from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QWidget, QTextBrowser
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QDialogButtonBox
 from PyQt5.QtWidgets import QFormLayout
@@ -43,7 +43,6 @@ class Dialog(QDialog):
         self.layout.addRow(QLabel("Current price:"), self.current_price)
         self.layout.addRow(QLabel("Leverage:"), self.leverage)
         self.formGroupBox.setLayout(self.layout)
-        # self.statusBar()
 
     def make_saveTextEdit(self, x):
         def saveTextEdit(text):
