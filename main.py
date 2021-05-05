@@ -18,7 +18,7 @@ class Dialog(QDialog):
         self.savedText = {}
 
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttonBox.accepted.connect(self.accepted)
+        buttonBox.accepted.connect(self.calculate)
         buttonBox.rejected.connect(self.reject)
 
         mainLayout = QVBoxLayout()
@@ -28,7 +28,7 @@ class Dialog(QDialog):
         self.setWindowTitle("Trade Risk Caluclator")
 
     def createFormGroupBox(self):
-        self.formGroupBox = QGroupBox("Form layout")
+        self.formGroupBox = QGroupBox("Insert values:")
         self.layout = QFormLayout()
         self.available_balance = QLineEdit()
         self.available_balance.textEdited.connect(self.make_saveTextEdit(1))
@@ -43,29 +43,27 @@ class Dialog(QDialog):
         self.layout.addRow(QLabel("Current price:"), self.current_price)
         self.layout.addRow(QLabel("Leverage:"), self.leverage)
         self.formGroupBox.setLayout(self.layout)
-        self.widget = QWidget()
-        self.textLabel = QLabel(self.widget)
-        self.textLabel.setText("Hello World!")
-
+        # self.statusBar()
 
     def make_saveTextEdit(self, x):
         def saveTextEdit(text):
             self.savedText[x] = text
         return saveTextEdit
 
-
-
-def calculate():
-    bal = float(dialog.available_balance.text())
-    ft = float(dialog.trade.text())
-    cp = float(dialog.current_price.text())
-    lev = int(dialog.leverage.text())
-    return cal.calc_trade(bal, ft, cp, lev)
+    def calculate(self):
+        try:
+            bal = float(dialog.available_balance.text())
+            ft = float(dialog.trade.text())
+            cp = float(dialog.current_price.text())
+            lev = int(dialog.leverage.text())
+            return_string = cal.calc_trade(bal, ft, cp, lev)
+        except ValueError:
+            print('Only float values allowed!')
+        # self.statusBar().showMessage('Calculated!')
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     dialog = Dialog()
     dialog.exec_()
-    string = calculate()
     app.exit()
