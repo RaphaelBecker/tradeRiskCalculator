@@ -1,35 +1,49 @@
 # #!/usr/bin/env python
-
+from PyQt5.QtCore import Qt
+from PyQt5 import QtCore, QtWidgets
 import calculator as cal
 
 import sys
-from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QWidget, QTextBrowser
+from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QCheckBox
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QDialogButtonBox
 from PyQt5.QtWidgets import QFormLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QVBoxLayout
 
+
 class Dialog(QDialog):
+    long_short = True  # True == long, False == short
+
     def __init__(self):
         super(Dialog, self).__init__()
         self.createFormGroupBox()
 
         self.savedText = {}
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttonBox.accepted.connect(self.calculate)
-        buttonBox.rejected.connect(self.reject)
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.calculate_trade)
+        button_box.rejected.connect(self.reject)
 
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.formGroupBox)
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
-        self.setWindowTitle("Trade Risk Caluclator")
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.form_group_box_insert)
+        main_layout.addWidget(button_box)
+        self.setLayout(main_layout)
+        self.setWindowTitle("Trade Risk Caluclator: Long")
+        self.setGeometry(300, 300, 350, 250)
+        self.show()
+
+    def changeTitle(self, state):
+        if state == Qt.Checked:
+            self.setWindowTitle('Trade Risk Caluclator: Short')
+            self.long_short = False
+        else:
+            self.setWindowTitle('Trade Risk Caluclator: Long')
+            self.long_short = True
 
     def createFormGroupBox(self):
-        self.formGroupBox = QGroupBox("Insert values:")
-        self.layout = QFormLayout()
+        self.form_group_box_insert = QGroupBox(" ")
+        self.layout_insert = QFormLayout()
         self.available_balance = QLineEdit()
         self.available_balance.textEdited.connect(self.make_saveTextEdit(1))
         self.trade = QLineEdit()
@@ -38,27 +52,41 @@ class Dialog(QDialog):
         self.current_price.textEdited.connect(self.make_saveTextEdit(3))
         self.leverage = QLineEdit()
         self.leverage.textEdited.connect(self.make_saveTextEdit(4))
-        self.layout.addRow(QLabel("Available Balance:"), self.available_balance)
-        self.layout.addRow(QLabel("First trade:"), self.trade)
-        self.layout.addRow(QLabel("Current price:"), self.current_price)
-        self.layout.addRow(QLabel("Leverage:"), self.leverage)
-        self.formGroupBox.setLayout(self.layout)
+        self.cb = QCheckBox('short', self)
+        self.cb.stateChanged.connect(self.changeTitle)
+        self.layout_insert.addRow(self.cb)
+        self.layout_insert.addRow(QLabel("Available balance [crypt]:"), self.available_balance)
+        self.layout_insert.addRow(QLabel("Initial bet [crypt]:"), self.trade)
+        self.layout_insert.addRow(QLabel("Current price [fiat]:"), self.current_price)
+        self.layout_insert.addRow(QLabel("Leverage:"), self.leverage)
+
+        self.output_rd = QtWidgets.QTextBrowser(self.form_group_box_insert)
+        self.output_rd.setGeometry(QtCore.QRect(10, 90, 331, 111))
+        self.output_rd.setObjectName("output_rd")
+        self.layout_insert.addRow(self.output_rd)
+
+        self.form_group_box_insert.setLayout(self.layout_insert)
 
     def make_saveTextEdit(self, x):
         def saveTextEdit(text):
             self.savedText[x] = text
+
         return saveTextEdit
 
-    def calculate(self):
+    def calculate_trade(self):
         try:
             bal = float(dialog.available_balance.text())
             ft = float(dialog.trade.text())
             cp = float(dialog.current_price.text())
             lev = int(dialog.leverage.text())
-            return_string = cal.calc_trade(bal, ft, cp, lev)
+            if self.long_short:
+                long_return_string = cal.calc_long_trade(bal, ft, cp, lev)
+                self.output_rd.append(long_return_string)
+            else:
+                short_return_string = cal.calc_short_trade(bal, ft, cp, lev)
+                self.output_rd.append(short_return_string)
         except ValueError:
             print('Only float values allowed!')
-        # self.statusBar().showMessage('Calculated!')
 
 
 if __name__ == '__main__':
