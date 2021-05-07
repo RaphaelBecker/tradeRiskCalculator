@@ -1,4 +1,4 @@
-# #!/usr/bin/env python
+#!/usr/bin/env python
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtWidgets
 import calculator as cal
