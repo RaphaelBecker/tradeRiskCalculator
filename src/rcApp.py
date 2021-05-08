@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtWidgets
-import calculator as cal
+from src import calculator as cal
 
 import sys
 from PyQt5.QtWidgets import QApplication, QLabel, QGroupBox, QCheckBox
