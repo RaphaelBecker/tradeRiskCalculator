@@ -16,7 +16,7 @@ def calc_short_trade(availalbe_balance, initial_bet, start_price, leverage, main
     while bet <= correction_account:
         correction_account = correction_account - bet
         trade_vol = bet * 2
-        return_string += str(f'\nCorr-Nr: {i + 1} ')
+        return_string += str(f'\nCorr-Nr: {i + 1} \nSet SHORT at: "{liq_price:.2f} - {i + 1}"')
         return_string += str(f'\nTrade vol: {trade_vol} | ')
         return_string += str(f'Correction: {bet} | ')
         return_string += str(f'Remaining balance: {correction_account:.4f} ')
@@ -54,7 +54,7 @@ def calc_long_trade(availalbe_balance, initial_bet, start_price, leverage, main_
     while bet <= correction_account:
         correction_account = correction_account - bet
         trade_vol = bet * 2
-        return_string += str(f'\nCorr-Nr: {i + 1} ')
+        return_string += str(f'\nCorr-Nr: {i + 1} \nSet LONG at: "{liq_price:.2f} + {i + 1}"')
         return_string += str(f'\nTrade vol: {trade_vol} | ')
         return_string += str(f'Correction: {bet} | ')
         return_string += str(f'Remaining balance: {correction_account:.4f} ')

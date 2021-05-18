@@ -57,9 +57,9 @@ class Dialog(QDialog):
         self.cb = QCheckBox('short', self)
         self.cb.stateChanged.connect(self.changeTitle)
         self.layout_insert.addRow(self.cb)
-        self.layout_insert.addRow(QLabel("Available balance [crypt]:"), self.available_balance)
-        self.layout_insert.addRow(QLabel("Initial bet [crypt]:"), self.trade)
-        self.layout_insert.addRow(QLabel("Start price [fiat]:"), self.start_price)
+        self.layout_insert.addRow(QLabel("Total Equity [crypt]:"), self.available_balance)
+        self.layout_insert.addRow(QLabel("Entry bet [crypt]:"), self.trade)
+        self.layout_insert.addRow(QLabel("Entry Price [fiat]:"), self.start_price)
         self.layout_insert.addRow(QLabel("Leverage:"), self.leverage)
         self.layout_insert.addRow(QLabel("Maintenance margin rate [%]:"), self.main_mar_rate)
 
