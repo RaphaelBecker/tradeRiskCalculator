@@ -82,7 +82,7 @@ class Dialog(QDialog):
             ft = float(dialog.trade.text())
             sp = float(dialog.start_price.text())
             lev = int(dialog.leverage.text())
-            mmr = int(dialog.main_mar_rate.text())
+            mmr = float(dialog.main_mar_rate.text())
             if self.long_short:
                 long_return_string = cal.calc_long_trade(bal, ft, sp, lev, mmr)
                 self.output_rd.append(long_return_string)
